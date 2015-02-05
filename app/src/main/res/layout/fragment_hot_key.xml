@@ -1,0 +1,178 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/black">
+
+    <TextView
+            android:id="@+id/hotkeyValue"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/btn_txt_size_32"
+            android:background="@color/dark_gray"
+            android:text="HOTKEY"/>
+
+
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="120dp"
+            android:layout_marginBottom="@dimen/btn_height">
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+            <TextView
+                    android:id="@+id/btnUp"
+                    android:layout_width="@dimen/btn_height"
+                    android:layout_height="@dimen/btn_height"
+                    android:layout_gravity="center"
+                    android:background="@android:drawable/ic_media_play"
+                    android:rotation="270"
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/btn_txt_size_32"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:enabled="false"/>
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                <TextView
+                        android:id="@+id/btnLeft"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/btn_height"
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/btn_txt_size_32"
+                        android:background="@android:drawable/ic_media_play"
+                        android:rotation="180"
+                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:enabled="false"/>
+                <TextView
+                        android:id="@+id/btnEnter"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/btn_height"
+                        android:text="ENTER"
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/btn_txt_size_32"
+                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:enabled="false"/>
+
+                <TextView
+                        android:id="@+id/btnRight"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/btn_height"
+                        android:textSize="@dimen/btn_txt_size_32"
+                        android:background="@android:drawable/ic_media_play"
+                        android:gravity="center"
+                        android:textColor="@color/gray"
+                        android:layout_weight="1"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:enabled="false"/>
+            </LinearLayout>
+            <TextView
+                    android:id="@+id/btnDown"
+                    android:layout_width="@dimen/btn_height"
+                    android:layout_height="@dimen/btn_height"
+                    android:layout_gravity="center"
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/btn_txt_size_32"
+                    android:background="@android:drawable/ic_media_play"
+                    android:rotation="90"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:enabled="false"/>
+        </LinearLayout>
+
+    </ScrollView>
+
+
+    <LinearLayout
+            android:id="@+id/buttonGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal">
+
+        <TextView
+                android:id="@+id/btnMenu"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/btn_height"
+                android:gravity="center"
+                android:text="MENU"
+                android:textSize="@dimen/btn_txt_size_32"
+                android:textColor="@color/text_style_1"
+                android:background="@drawable/btn_style_1"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"/>
+
+        <View android:id="@+id/line"
+              android:layout_width="2dp"
+              android:layout_height="match_parent"
+              android:layout_margin="10dp"
+              android:layout_gravity="center"
+              android:background="@color/gray"/>
+
+        <TextView
+                android:id="@+id/btnExit"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/btn_height"
+                android:text="EXIT"
+                android:textSize="@dimen/btn_txt_size_32"
+                android:textColor="@color/text_style_1"
+                android:background="@drawable/btn_style_1"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/hotkeyValue"
+            android:orientation="vertical">
+
+        <SlidingDrawer
+                android:id="@+id/sliding"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:content="@+id/keyBtn"
+                android:handle="@+id/imageViewIcon"
+                android:orientation="vertical"
+                android:rotation="180">
+
+            <TableLayout
+                    android:id="@+id/keyBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:stretchColumns="0,1,2"
+                    android:background="@color/black"
+                    android:rotation="180">
+
+            </TableLayout>
+            <ImageView
+                    android:id="@+id/imageViewIcon"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_down"
+                    android:background="@color/gray"
+                    android:rotation="180"/>
+        </SlidingDrawer>
+    </LinearLayout>
+
+</RelativeLayout>

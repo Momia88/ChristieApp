@@ -1,7 +1,10 @@
 package com.coretronic.christieapp.app;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -9,8 +12,12 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,14 +35,63 @@ public class ChristieActivity extends FragmentActivity implements ViewPager.OnPa
     private int pageCount = 0;
     private int preView = 0;
     private static TelnetService telnetService;
-    private String remoteip = "10.1.6.103";
-    private int remoteport = 3002;
+    //    private String remoteip = "10.1.6.103";
+//    private int remoteport = 3002;
+    private String mConnectedDeviceName;
     //    private String remoteip = "10.2.24.195";
     //    private int remoteport = 3002;
-    //    private String remoteip = "192.168.1.100";
-    //    private int remoteport = 3002;
+    private String remoteip = "192.168.1.100";
+    private int remoteport = 3002;
     //    private String remoteip = "10.100.1.12";
     //    private int remoteport = 23;
+
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case AppConfig.MESSAGE_STATE_CHANGE:
+                    switch (msg.arg1) {
+                        case TelnetService.STATE_CONNECTED:
+                            try {
+                                setStatus("STATE_CONNECTED");
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            break;
+                        case TelnetService.STATE_CONNECTING:
+                            setStatus("STATE_CONNECTING");
+                            break;
+                        case TelnetService.STATE_NONE:
+                            setStatus("NOT connected");
+                            break;
+                    }
+                    break;
+                case AppConfig.MESSAGE_WRITE:
+//                    byte[] writeBuf = (byte[]) msg.obj;
+                    // construct a string from the buffer
+//                    String writeMessage = new String(writeBuf);
+                    String writeMessage = (String) msg.obj;
+                    Log.d(TAG, "write message: " + writeMessage);
+                    break;
+                case AppConfig.MESSAGE_READ:
+                    byte[] readBuf = (byte[]) msg.obj;
+                    // construct a string from the valid bytes in the buffer
+                    String readMessage = new String(readBuf, 0, msg.arg1);
+                    Log.d(TAG, "read message: " + readMessage);
+                    break;
+                case AppConfig.MESSAGE_DEVICE_NAME:
+                    // save the connected device's name
+                    mConnectedDeviceName = msg.getData().getString(AppConfig.DEVICE_NAME);
+                    Toast.makeText(mContext, "Connected to "
+                            + mConnectedDeviceName, Toast.LENGTH_SHORT).show();
+                    break;
+                case AppConfig.MESSAGE_TOAST:
+                    Toast.makeText(mContext, msg.getData().getString(AppConfig.TOAST),
+                            Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,13 +100,14 @@ public class ChristieActivity extends FragmentActivity implements ViewPager.OnPa
         mContext = this;
         // telnet connect
         try {
-            telnetService = new TelnetService(mContext);
+            telnetService = new TelnetService(mContext, mHandler);
             telnetService.connect(remoteip, remoteport);
         } catch (Exception e) {
             e.printStackTrace();
         }
         // view pager fragment list
         fragmentList = new ArrayList<Fragment>();
+        fragmentList.add(new DeviceListFragment());
         fragmentList.add(new PowerControlFragment());
         fragmentList.add(new HotKeyFragment());
         fragmentList.add(new LensFragment());
@@ -99,7 +156,45 @@ public class ChristieActivity extends FragmentActivity implements ViewPager.OnPa
 
     @Override
     public void onPageScrollStateChanged(int state) {
+    }
 
+    private void setStatus(int resId) {
+        final ActionBar actionBar = getActionBar();
+        if (null == actionBar) {
+            return;
+        }
+        actionBar.setSubtitle(resId);
+    }
+
+    private void setStatus(CharSequence subTitle) {
+        final ActionBar actionBar = getActionBar();
+        if (null == actionBar) {
+            return;
+        }
+        actionBar.setSubtitle(subTitle);
+    }
+
+    public static void sendCommand(String str) {
+        telnetService.write(str);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.connect_close: {
+                // Launch the DeviceListActivity to see devices and do scan
+                telnetService.stop();
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -122,7 +217,5 @@ public class ChristieActivity extends FragmentActivity implements ViewPager.OnPa
             return fragmentList.size();
         }
     }
-    public static void sendCommand(final Context mContext, final String key) {
-        telnetService.sendCommand(mContext,key);
-    }
+
 }

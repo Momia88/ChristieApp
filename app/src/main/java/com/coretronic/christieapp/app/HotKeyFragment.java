@@ -166,7 +166,7 @@ public class HotKeyFragment extends Fragment {
             int value = Integer.valueOf(btnValue.getText().toString());
             final String keyValue = KeyMap.keyMap.get(AppConfig.ids[value]);
             Log.d(TAG, "keyValue: " + keyValue);
-            TelnetService.sendCommand(mContext, keyValue);
+            ChristieActivity.sendCommand(keyValue);
         }
     };
 

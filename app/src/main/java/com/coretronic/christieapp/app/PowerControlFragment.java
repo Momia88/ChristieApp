@@ -79,12 +79,12 @@ public class PowerControlFragment extends Fragment {
                 case R.id.key_info:
                     Log.d(TAG, "btn1");
                     keyValue = KeyMap.keyMap.get(v.getId());
-                    ChristieActivity.sendCommand(mContext, keyValue);
+                    ChristieActivity.sendCommand(keyValue);
                     break;
                 case R.id.key_exit:
                     Log.d(TAG, "btn2");
                     keyValue = KeyMap.keyMap.get(v.getId());
-                    ChristieActivity.sendCommand(mContext, keyValue);
+                    ChristieActivity.sendCommand(keyValue);
                     break;
             }
         }

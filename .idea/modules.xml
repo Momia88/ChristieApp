@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ChristieApp.iml" filepath="$PROJECT_DIR$/ChristieApp.iml" />
-      <module fileurl="file://$PROJECT_DIR$/RemoteController/RemoteController.iml" filepath="$PROJECT_DIR$/RemoteController/RemoteController.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

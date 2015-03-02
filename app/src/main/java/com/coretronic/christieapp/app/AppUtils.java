@@ -8,8 +8,12 @@ import android.util.DisplayMetrics;
  */
 public class AppUtils {
 
-    public static float getDensity(Context context){
+    private static final String TAG = AppUtils.class.getSimpleName();
+
+    public static float getDensity(Context context) {
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
         return metrics.density;
     }
+
+
 }

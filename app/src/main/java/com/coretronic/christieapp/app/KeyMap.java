@@ -25,16 +25,16 @@ public class KeyMap {
 
         keyMap.put(R.id.key_pow_on,"(PWR 1)");
         keyMap.put(R.id.key_pow_off,"(PWR 0)");
-        keyMap.put(R.id.key_menu,"(KEY 19)");
+        keyMap.put(R.id.key_info,"(KEY 19)");
+        keyMap.put(R.id.key_exit,"(KEY 20)");
+        keyMap.put(R.id.key_info,"(KEY 48)");
+        keyMap.put(R.id.key_exit,"(KEY 47)");
+        keyMap.put(R.id.key_info,"(KEY 66)");
         keyMap.put(R.id.key_up,"(KEY 38)");
         keyMap.put(R.id.key_down,"(KEY 42)");
         keyMap.put(R.id.key_left,"(KEY 39)");
         keyMap.put(R.id.key_right,"(KEY 41)");
         keyMap.put(R.id.key_enter,"(KEY 40)");
-        keyMap.put(R.id.key_exit,"(KEY 20)");
-        keyMap.put(R.id.key_input,"(KEY 48)");
-        keyMap.put(R.id.key_auto,"(KEY 47)");
-        keyMap.put(R.id.key_info,"(KEY 66)");
 
         keyMap.put(R.id.key_focus_far,"(FCS p)");
         keyMap.put(R.id.key_focus_near,"(FCS n)");

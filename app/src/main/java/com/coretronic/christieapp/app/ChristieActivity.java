@@ -1,5 +1,6 @@
 package com.coretronic.christieapp.app;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -18,6 +19,7 @@ import java.util.List;
 public class ChristieActivity extends FragmentActivity implements ViewPager.OnPageChangeListener {
 
     private String TAG = ChristieActivity.class.getSimpleName();
+    private Context mContext;
     private ViewPager mPager;
     private PagerAdapter mPagerAdapter;
     private List<Fragment> fragmentList;
@@ -25,11 +27,29 @@ public class ChristieActivity extends FragmentActivity implements ViewPager.OnPa
     private List<View> pageList;
     private int pageCount = 0;
     private int preView = 0;
+    private static TelnetService telnetService;
+    private String remoteip = "10.1.6.103";
+    private int remoteport = 3002;
+    //    private String remoteip = "10.2.24.195";
+    //    private int remoteport = 3002;
+    //    private String remoteip = "192.168.1.100";
+    //    private int remoteport = 3002;
+    //    private String remoteip = "10.100.1.12";
+    //    private int remoteport = 23;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_layout);
+        mContext = this;
+        // telnet connect
+        try {
+            telnetService = new TelnetService(mContext);
+            telnetService.connect(remoteip, remoteport);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        // view pager fragment list
         fragmentList = new ArrayList<Fragment>();
         fragmentList.add(new PowerControlFragment());
         fragmentList.add(new HotKeyFragment());
@@ -68,9 +88,9 @@ public class ChristieActivity extends FragmentActivity implements ViewPager.OnPa
 
     @Override
     public void onPageSelected(int position) {
-        Log.d(TAG,"preView: " + preView);
-        Log.d(TAG,"position: " + position);
-        if(position != preView) {
+        Log.d(TAG, "preView: " + preView);
+        Log.d(TAG, "position: " + position);
+        if (position != preView) {
             pageList.get(preView).setBackgroundResource(R.color.gray);
             pageList.get(position).setBackgroundResource(R.color.white);
             preView = position;
@@ -102,5 +122,7 @@ public class ChristieActivity extends FragmentActivity implements ViewPager.OnPa
             return fragmentList.size();
         }
     }
-
+    public static void sendCommand(final Context mContext, final String key) {
+        telnetService.sendCommand(mContext,key);
+    }
 }

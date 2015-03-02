@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="id" name="key_1"/>
+    <item type="id" name="key_2"/>
+    <item type="id" name="key_3"/>
+    <item type="id" name="key_4"/>
+    <item type="id" name="key_5"/>
+    <item type="id" name="key_6"/>
+    <item type="id" name="key_7"/>
+    <item type="id" name="key_8"/>
+    <item type="id" name="key_9"/>
+    <item type="id" name="key_0"/>
+    <item type="id" name="key_pow_on"/>
+    <item type="id" name="key_pow_off"/>
+</resources>

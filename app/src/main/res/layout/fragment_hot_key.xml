@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
             <TextView
-                    android:id="@+id/btnUp"
+                    android:id="@+id/key_up"
                     android:layout_width="@dimen/btn_height"
                     android:layout_height="@dimen/btn_height"
                     android:layout_gravity="center"
@@ -35,14 +35,13 @@
                     android:gravity="center"
                     android:layout_weight="1"
                     android:clickable="true"
-                    android:focusable="true"
-                    android:enabled="false"/>
+                    android:focusable="true"/>
             <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
                 <TextView
-                        android:id="@+id/btnLeft"
+                        android:id="@+id/key_left"
                         android:layout_width="0dp"
                         android:layout_height="@dimen/btn_height"
                         android:textColor="@color/gray"
@@ -52,10 +51,9 @@
                         android:gravity="center"
                         android:layout_weight="1"
                         android:clickable="true"
-                        android:focusable="true"
-                        android:enabled="false"/>
+                        android:focusable="true"/>
                 <TextView
-                        android:id="@+id/btnEnter"
+                        android:id="@+id/key_enter"
                         android:layout_width="0dp"
                         android:layout_height="@dimen/btn_height"
                         android:text="ENTER"
@@ -64,11 +62,10 @@
                         android:gravity="center"
                         android:layout_weight="1"
                         android:clickable="true"
-                        android:focusable="true"
-                        android:enabled="false"/>
+                        android:focusable="true"/>
 
                 <TextView
-                        android:id="@+id/btnRight"
+                        android:id="@+id/key_right"
                         android:layout_width="0dp"
                         android:layout_height="@dimen/btn_height"
                         android:textSize="@dimen/btn_txt_size_32"
@@ -77,11 +74,10 @@
                         android:textColor="@color/gray"
                         android:layout_weight="1"
                         android:clickable="true"
-                        android:focusable="true"
-                        android:enabled="false"/>
+                        android:focusable="true"/>
             </LinearLayout>
             <TextView
-                    android:id="@+id/btnDown"
+                    android:id="@+id/key_down"
                     android:layout_width="@dimen/btn_height"
                     android:layout_height="@dimen/btn_height"
                     android:layout_gravity="center"
@@ -92,8 +88,7 @@
                     android:gravity="center"
                     android:layout_weight="1"
                     android:clickable="true"
-                    android:focusable="true"
-                    android:enabled="false"/>
+                    android:focusable="true"/>
         </LinearLayout>
 
     </ScrollView>
@@ -107,7 +102,7 @@
             android:orientation="horizontal">
 
         <TextView
-                android:id="@+id/btnMenu"
+                android:id="@+id/key_info"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/btn_height"
                 android:gravity="center"
@@ -127,7 +122,7 @@
               android:background="@color/gray"/>
 
         <TextView
-                android:id="@+id/btnExit"
+                android:id="@+id/key_exit"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/btn_height"
                 android:text="EXIT"

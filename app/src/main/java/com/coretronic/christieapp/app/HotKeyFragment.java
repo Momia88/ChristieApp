@@ -1,7 +1,6 @@
 package com.coretronic.christieapp.app;
 
-import android.content.Intent;
-import android.content.pm.ResolveInfo;
+import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,34 +10,81 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 
-import java.util.List;
-
 public class HotKeyFragment extends Fragment {
 
     private static final String TAG = HotKeyFragment.class.getSimpleName();
-    // slidedraw
-    private GridView gv;
-    private SlidingDrawer sd;
-    private ImageView iv;
-    private List<ResolveInfo> apps;
+    private Context mContext;
     private float density;
     private TableRow.LayoutParams btnParams;
-    private TableLayout tableLayout;
     private Button btnValue;
     private Resources rs;
-    private TextView hotkeyValue;
     private int btnHeight = 70;
     private int rowMax = 3;
     private int colMax = 3;
     private int txtSize = 36;
 
+    private TextView hotkeyValue;
+    private TextView keyUp;
+    private TextView keyLeft;
+    private TextView keyEnter;
+    private TextView keyRight;
+    private TextView keyDown;
+    private LinearLayout buttonGroup;
+    private TextView keyInfo;
+    private View line;
+    private TextView keyExit;
+    private SlidingDrawer slidingDrawer;
+    private TableLayout tableLayout;
+    private ImageView imageViewIcon;
+
+    private void assignViews(View v) {
+        hotkeyValue = (TextView) v.findViewById(R.id.hotkeyValue);
+        keyUp = (TextView) v.findViewById(R.id.key_up);
+        keyLeft = (TextView) v.findViewById(R.id.key_left);
+        keyEnter = (TextView) v.findViewById(R.id.key_enter);
+        keyRight = (TextView) v.findViewById(R.id.key_right);
+        keyDown = (TextView) v.findViewById(R.id.key_down);
+        buttonGroup = (LinearLayout) v.findViewById(R.id.buttonGroup);
+        keyInfo = (TextView) v.findViewById(R.id.key_info);
+        line = v.findViewById(R.id.line);
+        keyExit = (TextView) v.findViewById(R.id.key_exit);
+        slidingDrawer = (SlidingDrawer) v.findViewById(R.id.sliding);
+        tableLayout = (TableLayout) v.findViewById(R.id.keyBtn);
+        imageViewIcon = (ImageView) v.findViewById(R.id.imageViewIcon);
+
+        // table layout
+        addNumKeyBtn(btnParams);
+
+        // slidedraw
+        int tableHeight = (colMax + 1) * btnHeight + colMax * 18;
+        LinearLayout.LayoutParams tableParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) (tableHeight * density));
+        slidingDrawer.setLayoutParams(tableParams);
+        slidingDrawer.setOnDrawerOpenListener(new SlidingDrawer.OnDrawerOpenListener()// 開抽屜
+        {
+            @Override
+            public void onDrawerOpened() {
+                imageViewIcon.setImageResource(R.drawable.ic_up);// 響應開抽屜事件, change icon
+            }
+        });
+        slidingDrawer.setOnDrawerCloseListener(new SlidingDrawer.OnDrawerCloseListener() {
+            @Override
+            public void onDrawerClosed() {
+                imageViewIcon.setImageResource(R.drawable.ic_down);// 響應關抽屜事件, change icon
+                hotkeyValue.setText("HOTKEY: " + btnValue.getText().toString());
+            }
+        });
+
+        keyEnter.setOnClickListener(keyListener);
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mContext = getActivity();
         rs = getActivity().getResources();
         density = AppUtils.getDensity(getActivity());
         btnParams = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, (int) (btnHeight * density));
-        btnParams.setMargins(3,3,3,3);
+        btnParams.setMargins(3, 3, 3, 3);
     }
 
     @Override
@@ -46,36 +92,16 @@ public class HotKeyFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_hot_key, container, false);
-
-        // table layout
-        tableLayout = (TableLayout) view.findViewById(R.id.keyBtn);
-        addNumKeyBtn(btnParams);
-
-        // hotkeyValue
-        hotkeyValue = (TextView) view.findViewById(R.id.hotkeyValue);
-
-        // slidedraw
-        int tableHeight = (colMax + 1) * btnHeight + colMax * 18;
-        LinearLayout.LayoutParams tableParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) (tableHeight * density));
-        sd = (SlidingDrawer) view.findViewById(R.id.sliding);
-        sd.setLayoutParams(tableParams);
-        iv = (ImageView) view.findViewById(R.id.imageViewIcon);
-        sd.setOnDrawerOpenListener(new SlidingDrawer.OnDrawerOpenListener()// 開抽屜
-        {
-            @Override
-            public void onDrawerOpened() {
-                iv.setImageResource(R.drawable.ic_up);// 響應開抽屜事件, change icon
-            }
-        });
-        sd.setOnDrawerCloseListener(new SlidingDrawer.OnDrawerCloseListener() {
-            @Override
-            public void onDrawerClosed() {
-                iv.setImageResource(R.drawable.ic_down);// 響應關抽屜事件, change icon
-                hotkeyValue.setText("HOTKEY: " + btnValue.getText().toString());
-            }
-        });
+        //get view
+        assignViews(view);
         return view;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
 
     private void addNumKeyBtn(TableRow.LayoutParams params) {
 
@@ -86,6 +112,7 @@ public class HotKeyFragment extends Fragment {
                 btn.setLayoutParams(params);
                 final int num = row * colMax + col + 1;
                 Log.d(TAG, "id: " + num);
+                btn.setId(AppConfig.ids[num]);
                 btn.setText(String.valueOf(num));
                 btn.setTextColor(rs.getColorStateList(R.color.text_style_1));
                 btn.setBackgroundResource(R.drawable.btn_style_1);
@@ -120,7 +147,7 @@ public class HotKeyFragment extends Fragment {
         // add text view
         TableRow.LayoutParams valueParams = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, (int) (btnHeight * density));
         valueParams.span = 2;
-        valueParams.setMargins(3,3,3,3);
+        valueParams.setMargins(3, 3, 3, 3);
         btnValue = new Button(getActivity());
         btnValue.setLayoutParams(valueParams);
         btnValue.setTextColor(rs.getColor(R.color.white));
@@ -132,17 +159,15 @@ public class HotKeyFragment extends Fragment {
         tableLayout.addView(tableRow);
     }
 
-    private void loadApps() {
-        Intent intent = new Intent(Intent.ACTION_MAIN, null);
-        intent.addCategory(Intent.CATEGORY_LAUNCHER);
 
-        apps = getActivity().getPackageManager().queryIntentActivities(intent, 0);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
+    View.OnClickListener keyListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            int value = Integer.valueOf(btnValue.getText().toString());
+            final String keyValue = KeyMap.keyMap.get(AppConfig.ids[value]);
+            Log.d(TAG, "keyValue: " + keyValue);
+            TelnetService.sendCommand(mContext, keyValue);
+        }
+    };
 
 }

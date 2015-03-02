@@ -1,5 +1,6 @@
 package com.coretronic.christieapp.app;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -21,14 +22,16 @@ public class PowerControlFragment extends Fragment {
     private TextView btn2;
     private boolean powerState = false;
     private Resources rs;
+    private Context mContext;
+
 
     private void assignViews(View v) {
         powerGroup = (LinearLayout) v.findViewById(R.id.powerGroup);
         powerIcon = (ImageButton) v.findViewById(R.id.powerIcon);
         buttonGroup = (LinearLayout) v.findViewById(R.id.buttonGroup);
-        btn1 = (TextView) v.findViewById(R.id.btnMenu);
+        btn1 = (TextView) v.findViewById(R.id.key_info);
         line = v.findViewById(R.id.line);
-        btn2 = (TextView) v.findViewById(R.id.btnExit);
+        btn2 = (TextView) v.findViewById(R.id.key_exit);
         powerIcon.setOnClickListener(btnListener);
         btn1.setOnClickListener(btnListener);
         btn2.setOnClickListener(btnListener);
@@ -38,6 +41,8 @@ public class PowerControlFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         rs = getActivity().getResources();
+        // telnet client
+        mContext = getActivity();
     }
 
     @Override
@@ -49,18 +54,20 @@ public class PowerControlFragment extends Fragment {
     }
 
     View.OnClickListener btnListener = new View.OnClickListener() {
+        String keyValue = "";
+
         @Override
         public void onClick(View v) {
-            switch (v.getId()){
+            switch (v.getId()) {
                 case R.id.powerIcon:
-                    if(powerState){
+                    if (powerState) {
                         btn1.setTextColor(rs.getColor(R.color.gray));
                         btn1.setEnabled(false);
                         btn2.setTextColor(rs.getColor(R.color.gray));
                         btn2.setEnabled(false);
                         buttonGroup.setBackgroundResource(R.color.black);
                         powerState = false;
-                    }else{
+                    } else {
                         btn1.setTextColor(rs.getColor(R.color.black));
                         btn1.setEnabled(true);
                         btn2.setTextColor(rs.getColor(R.color.black));
@@ -69,11 +76,15 @@ public class PowerControlFragment extends Fragment {
                         powerState = true;
                     }
                     break;
-                case R.id.btnMenu:
-                    Log.d(TAG,"btn1" );
+                case R.id.key_info:
+                    Log.d(TAG, "btn1");
+                    keyValue = KeyMap.keyMap.get(v.getId());
+                    ChristieActivity.sendCommand(mContext, keyValue);
                     break;
-                case R.id.btnExit:
-                    Log.d(TAG,"btn2" );
+                case R.id.key_exit:
+                    Log.d(TAG, "btn2");
+                    keyValue = KeyMap.keyMap.get(v.getId());
+                    ChristieActivity.sendCommand(mContext, keyValue);
                     break;
             }
         }

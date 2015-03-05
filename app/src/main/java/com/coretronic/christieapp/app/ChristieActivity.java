@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+import com.coretronic.christieapp.app.Common.AppConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -107,7 +108,6 @@ public class ChristieActivity extends FragmentActivity implements ViewPager.OnPa
         }
         // view pager fragment list
         fragmentList = new ArrayList<Fragment>();
-        fragmentList.add(new DeviceListFragment());
         fragmentList.add(new PowerControlFragment());
         fragmentList.add(new HotKeyFragment());
         fragmentList.add(new LensFragment());

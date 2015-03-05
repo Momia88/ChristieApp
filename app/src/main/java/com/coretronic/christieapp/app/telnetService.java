@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import com.coretronic.christieapp.app.Common.AppConfig;
 import org.apache.commons.net.telnet.TelnetClient;
 
 import java.io.IOException;

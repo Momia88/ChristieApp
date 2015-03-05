@@ -13,7 +13,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+import com.coretronic.christieapp.app.Adapter.DeviceListBaseAdapter;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -42,7 +45,14 @@ public class DeviceListFragment extends Fragment {
     /**
      * Newly discovered devices
      */
-    private ArrayAdapter<String> mNewDevicesArrayAdapter;
+    private DeviceListBaseAdapter mNewDevicesArrayAdapter;
+    private List<String> mDevicesLists;
+    private List<String> mNewDevicesLists;
+
+    // test ip
+    private String ipAddr = "66.249.79.";
+    private int i = 11;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,38 +65,27 @@ public class DeviceListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.activity_device_list, container, false);
+        return inflater.inflate(R.layout.fragment_device_list, container, false);
     }
 
     @Override
     public void onViewCreated(View v, Bundle savedInstanceState) {
         // Get the local Bluetooth adapter
         mBtAdapter = BluetoothAdapter.getDefaultAdapter();
-
-        // Initialize array adapters. One for already paired devices and
-        // one for newly discovered devices
-        // Find and set up the ListView for paired devices
-        ArrayAdapter<String> pairedDevicesArrayAdapter =
-                new ArrayAdapter<String>(getActivity(), R.layout.device_name);
-        ListView pairedListView = (ListView) v.findViewById(R.id.paired_devices);
-        pairedListView.setAdapter(pairedDevicesArrayAdapter);
-        pairedListView.setOnItemClickListener(mDeviceClickListener);
+        mDevicesLists = new ArrayList<String>();
+        mNewDevicesLists = new ArrayList<String>();
+        mNewDevicesArrayAdapter = new DeviceListBaseAdapter(getActivity(), mDevicesLists);
 
         // Get a set of currently paired devices
         Set<BluetoothDevice> pairedDevices = mBtAdapter.getBondedDevices();
         // If there are paired devices, add each one to the ArrayAdapter
         if (pairedDevices.size() > 0) {
-            v.findViewById(R.id.title_paired_devices).setVisibility(View.VISIBLE);
             for (BluetoothDevice device : pairedDevices) {
-                pairedDevicesArrayAdapter.add(device.getName() + "\n" + device.getAddress());
+                mDevicesLists.add(device.getName() + "\n" + ipAddr + String.valueOf(i++));
             }
-        } else {
-            String noDevices = "none_paired";
-            pairedDevicesArrayAdapter.add(noDevices);
         }
 
         // Find and set up the ListView for newly discovered devices
-        mNewDevicesArrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.device_name);
         ListView newDevicesListView = (ListView) v.findViewById(R.id.new_devices);
         newDevicesListView.setAdapter(mNewDevicesArrayAdapter);
         newDevicesListView.setOnItemClickListener(mDeviceClickListener);
@@ -100,13 +99,11 @@ public class DeviceListFragment extends Fragment {
         getActivity().registerReceiver(mReceiver, filter);
 
 
-
         // Initialize the button to perform device discovery
         scanButton = (Button) v.findViewById(R.id.button_scan);
         scanButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 doDiscovery();
-                v.setVisibility(View.GONE);
             }
         });
     }
@@ -131,7 +128,7 @@ public class DeviceListFragment extends Fragment {
     private void doDiscovery() {
         Log.d(TAG, "doDiscovery()");
         // clear adapter
-        mNewDevicesArrayAdapter.clear();
+        mNewDevicesLists.clear();
 
         // If we're already discovering, stop it
         if (mBtAdapter.isDiscovering()) {
@@ -165,23 +162,23 @@ public class DeviceListFragment extends Fragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-
             // When discovery finds a device
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 // Get the BluetoothDevice object from the Intent
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 // If it's already paired, skip it, because it's been listed already
                 if (device.getBondState() != BluetoothDevice.BOND_BONDED) {
-                    mNewDevicesArrayAdapter.add(device.getName() + "\n" + device.getAddress());
+                    mNewDevicesLists.add(device.getName() + "\n" + ipAddr + String.valueOf(i++));
                 }
                 // When discovery is finished, change the Activity title
             } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
                 if (mNewDevicesArrayAdapter.getCount() == 0) {
                     String noDevices = "none_found";
-                    mNewDevicesArrayAdapter.add(noDevices);
+                    mNewDevicesLists.add(noDevices);
                 }
-                scanButton.setVisibility(View.VISIBLE);
             }
+            mDevicesLists.addAll(mNewDevicesLists);
+            mNewDevicesArrayAdapter.notifyDataSetChanged();
         }
     };
 

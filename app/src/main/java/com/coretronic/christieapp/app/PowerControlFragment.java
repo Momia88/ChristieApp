@@ -1,6 +1,7 @@
 package com.coretronic.christieapp.app;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import com.coretronic.christieapp.app.Common.KeyMap;
 
 public class PowerControlFragment extends Fragment {
     private String TAG = PowerControlFragment.class.getSimpleName();
@@ -23,6 +25,7 @@ public class PowerControlFragment extends Fragment {
     private boolean powerState = false;
     private Resources rs;
     private Context mContext;
+    private static final int REQUEST_DEVICE_LIST = 1;
 
 
     private void assignViews(View v) {
@@ -60,21 +63,23 @@ public class PowerControlFragment extends Fragment {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.powerIcon:
-                    if (powerState) {
-                        btn1.setTextColor(rs.getColor(R.color.gray));
-                        btn1.setEnabled(false);
-                        btn2.setTextColor(rs.getColor(R.color.gray));
-                        btn2.setEnabled(false);
-                        buttonGroup.setBackgroundResource(R.color.black);
-                        powerState = false;
-                    } else {
-                        btn1.setTextColor(rs.getColor(R.color.black));
-                        btn1.setEnabled(true);
-                        btn2.setTextColor(rs.getColor(R.color.black));
-                        btn2.setEnabled(true);
-                        buttonGroup.setBackgroundResource(R.color.origen);
-                        powerState = true;
-                    }
+                    Intent serverIntent = new Intent(getActivity(), DeviceListActivity.class);
+                    startActivityForResult(serverIntent, REQUEST_DEVICE_LIST);
+//                    if (powerState) {
+//                        btn1.setTextColor(rs.getColor(R.color.gray));
+//                        btn1.setEnabled(false);
+//                        btn2.setTextColor(rs.getColor(R.color.gray));
+//                        btn2.setEnabled(false);
+//                        buttonGroup.setBackgroundResource(R.color.black);
+//                        powerState = false;
+//                    } else {
+//                        btn1.setTextColor(rs.getColor(R.color.black));
+//                        btn1.setEnabled(true);
+//                        btn2.setTextColor(rs.getColor(R.color.black));
+//                        btn2.setEnabled(true);
+//                        buttonGroup.setBackgroundResource(R.color.origen);
+//                        powerState = true;
+//                    }
                     break;
                 case R.id.key_info:
                     Log.d(TAG, "btn1");

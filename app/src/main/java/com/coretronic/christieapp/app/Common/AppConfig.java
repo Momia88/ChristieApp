@@ -1,4 +1,6 @@
-package com.coretronic.christieapp.app;
+package com.coretronic.christieapp.app.Common;
+
+import com.coretronic.christieapp.app.R;
 
 /**
  * Created by Morris on 15/1/22.

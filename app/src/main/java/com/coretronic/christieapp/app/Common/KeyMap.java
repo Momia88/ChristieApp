@@ -1,4 +1,6 @@
-package com.coretronic.christieapp.app;
+package com.coretronic.christieapp.app.Common;
+
+import com.coretronic.christieapp.app.R;
 
 import java.util.HashMap;
 import java.util.Map;

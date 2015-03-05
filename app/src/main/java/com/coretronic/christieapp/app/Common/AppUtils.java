@@ -1,4 +1,4 @@
-package com.coretronic.christieapp.app;
+package com.coretronic.christieapp.app.Common;
 
 import android.content.Context;
 import android.util.DisplayMetrics;

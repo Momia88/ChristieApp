@@ -9,6 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+import com.coretronic.christieapp.app.Common.AppConfig;
+import com.coretronic.christieapp.app.Common.AppUtils;
+import com.coretronic.christieapp.app.Common.KeyMap;
 
 public class HotKeyFragment extends Fragment {
 

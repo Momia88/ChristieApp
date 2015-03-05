@@ -35,7 +35,7 @@ public class ChristieActivity extends FragmentActivity implements ViewPager.OnPa
     private List<View> pageList;
     private int pageCount = 0;
     private int preView = 0;
-    private static TelnetService telnetService;
+    private static TelnetServices telnetServices;
     //    private String remoteip = "10.1.6.103";
 //    private int remoteport = 3002;
     private String mConnectedDeviceName;
@@ -52,17 +52,17 @@ public class ChristieActivity extends FragmentActivity implements ViewPager.OnPa
             switch (msg.what) {
                 case AppConfig.MESSAGE_STATE_CHANGE:
                     switch (msg.arg1) {
-                        case TelnetService.STATE_CONNECTED:
+                        case TelnetServices.STATE_CONNECTED:
                             try {
                                 setStatus("STATE_CONNECTED");
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
                             break;
-                        case TelnetService.STATE_CONNECTING:
+                        case TelnetServices.STATE_CONNECTING:
                             setStatus("STATE_CONNECTING");
                             break;
-                        case TelnetService.STATE_NONE:
+                        case TelnetServices.STATE_NONE:
                             setStatus("NOT connected");
                             break;
                     }
@@ -101,8 +101,8 @@ public class ChristieActivity extends FragmentActivity implements ViewPager.OnPa
         mContext = this;
         // telnet connect
         try {
-            telnetService = new TelnetService(mContext, mHandler);
-            telnetService.connect(remoteip, remoteport);
+            telnetServices = new TelnetServices(mContext, mHandler);
+            telnetServices.connect(remoteip, remoteport);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -175,7 +175,7 @@ public class ChristieActivity extends FragmentActivity implements ViewPager.OnPa
     }
 
     public static void sendCommand(String str) {
-        telnetService.write(str);
+        telnetServices.write(str);
     }
 
     @Override
@@ -190,7 +190,7 @@ public class ChristieActivity extends FragmentActivity implements ViewPager.OnPa
         switch (item.getItemId()) {
             case R.id.connect_close: {
                 // Launch the DeviceListActivity to see devices and do scan
-                telnetService.stop();
+                telnetServices.stop();
                 return true;
             }
         }

@@ -13,8 +13,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
-public class TelnetService {
-    private static final String TAG = TelnetService.class.getSimpleName();
+public class TelnetServices {
+    private static final String TAG = TelnetServices.class.getSimpleName();
     private static Context context;
     private static TelnetClient telnetClient;
     private final Handler mHandler;
@@ -27,7 +27,7 @@ public class TelnetService {
     public static final int STATE_CONNECTING = 1; // now initiating an outgoing connection
     public static final int STATE_CONNECTED = 2;  // now connected to a remote device
 
-    public TelnetService(Context context, Handler handler) {
+    public TelnetServices(Context context, Handler handler) {
         this.context = context;
         telnetClient = new TelnetClient();
         mState = STATE_NONE;
@@ -136,7 +136,7 @@ public class TelnetService {
             Log.d(TAG, "mConnectThread = null");
 
             // Reset the ConnectThread because we're done
-            synchronized (TelnetService.this) {
+            synchronized (TelnetServices.this) {
                 mConnectThread = null;
             }
             Log.d(TAG, "go to connected");
